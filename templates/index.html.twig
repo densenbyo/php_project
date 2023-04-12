@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Management</title>
+    <style>
+        /* Add any CSS styles here */
+    </style>
+</head>
+<body>
+
+<h1>Course Management</h1>
+
+<h1>Create a new course</h1>
+<form id="create-course-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="details">Details:</label>
+    <textarea id="details" name="details" required></textarea>
+    <br>
+    <label for="topic">Topic:</label>
+    <input type="text" id="topic" name="topic" required>
+    <br>
+    <label for="startingDate">Starting Date:</label>
+    <input type="date" id="startingDate" name="startingDate" required>
+    <br>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" required>
+    <br>
+    <button type="submit">Create Course</button>
+</form>
+
+<h1>Find courses by name</h1>
+<form id="find-courses-by-name-form">
+    <label for="search-name">Name:</label>
+    <input type="text" id="search-name" name="search-name" required>
+    <button type="submit">Find Courses</button>
+</form>
+
+<h1>Find courses by topic</h1>
+<form id="find-courses-by-topic-form">
+    <label for="search-topic">Topic:</label>
+    <input type="text" id="search-topic" name="search-topic" required>
+    <button type="submit">Find Courses</button>
+</form>
+
+<button id="get-all-courses-btn">Get All Courses</button>
+
+<div id="courses-container"></div>
+
+<script>
+    document.getElementById('get-all-courses-btn').addEventListener('click', async () => {
+        try {
+            const courses = await getAllCourses();
+            console.log('All courses:', courses);
+            const coursesContainer = document.getElementById('courses-container');
+            coursesContainer.innerHTML = '';
+            courses.forEach((course) => {
+                const courseDiv = document.createElement('div');
+                courseDiv.innerHTML = `<h2>${course.name}</h2>
+                                        <p>Details: ${course.details}</p>
+                                        <p>Topic: ${course.topic}</p>
+                                        <p>Starting Date: ${course.startingDate}</p>
+                                        <p>Price: ${course.price}</p>`;
+                coursesContainer.appendChild(courseDiv);
+            });
+        } catch (error) {
+            console.error('Error getting all courses:', error);
+        }
+    });
+
+    async function getAllCourses() {
+        const response = await fetch('/courses/all');
+        console.log('Response Text:', response);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error);
+        }
+        return await response.json();
+    }
+
+    document.getElementById('create-course-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const courseData = Object.fromEntries(formData.entries());
+
+        try {
+            await createCourse(courseData);
+            console.log('Course created:', courseData);
+        } catch (error) {
+            console.error('Error creating course:', error);
+        }
+    });
+
+    async function createCourse(courseData) {
+        await fetch('/courses', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(courseData),
+        }).then((response) => {
+            console.log('Response Text:', response);
+            if (!response.ok) {
+                const data = response.json();
+                throw new Error(data.error);
+            }
+        }).catch((error) => {
+            console.error('Error creating course:', error);
+        });
+    }
+
+    document.getElementById('find-courses-by-topic-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const searchTopic = formData.get('search-topic');
+
+        try {
+            const courses = await findCoursesByTopic(searchTopic);
+            console.log('Courses found:', courses);
+        } catch (error) {
+            console.error('Error finding courses:', error);
+        }
+    });
+
+    document.getElementById('find-courses-by-name-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const searchName = formData.get('search-name');
+
+        try {
+            const courses = await findCoursesByName(searchName);
+            console.log('Courses found:', courses);
+        } catch (error) {
+            console.error('Error finding courses:', error);
+        }
+    });
+
+    async function findCoursesByName(name) {
+        let options = {
+            method:"GET",
+        }
+        const response = await fetch(`/courses/name/${encodeURIComponent(name)}`, options);
+        console.log('Response Text:', response);
+        console.log(await response.clone().text());
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error);
+        }
+        return await response.json();
+    }
+
+    async function findCoursesByTopic(topic) {
+        let options = {
+            method:"GET",
+        }
+        const response = await fetch(`/courses/topic/${encodeURIComponent(topic)}`, options)
+        console.log('Response Text:', response);
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error);
+        }
+        return await response.json();
+    }
+
+
+    async function deleteCourse(id) {
+        try {
+            const response = await fetch(`/courses/${id}`, { method: 'DELETE' });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error);
+            }
+
+            console.log(`Course with id ${id} deleted.`);
+        } catch (error) {
+            console.error(`Error deleting course with id ${id}:`, error);
+        }
+    }
+</script>
+</body>
+</html>

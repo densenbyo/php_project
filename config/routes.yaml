@@ -1,0 +1,154 @@
+course_create:
+    path: /course/create
+    controller: App\Controller\CourseController::createAction
+    methods: [POST]
+
+course_delete:
+    path: /course/delete/{id}
+    controller: App\Controller\CourseController::deleteAction
+    methods: [DELETE]
+
+course_find_all:
+    path: /course/all
+    controller: App\Controller\CourseController::findAllCourses
+    methods: [GET]
+
+course_find_by_name:
+    path: /course/find/name/{name}
+    controller: App\Controller\CourseController::findByNameAction
+    methods: [GET]
+
+course_find_by_topic:
+    path: /course/find/topic/{topic}
+    controller: App\Controller\CourseController::findByTopicAction
+    methods: [GET]
+
+course_update:
+    path: /course/update/{id}
+    controller: App\Controller\CourseController::updateAction
+    methods: [PUT]
+
+comments_create:
+    path: /comment/create
+    controller: App\Controller\CommentsController::createAction
+    methods: [POST]
+
+comments_delete:
+    path: /comment/delete/{id}
+    controller: App\Controller\CommentsController::deleteAction
+    methods: [DELETE]
+
+comments_get_all:
+    path: /comment
+    controller: App\Controller\CommentsController::getAllAction
+    methods: [GET]
+
+lecture_create:
+    path: /lecture/create
+    controller: App\Controller\LectureController::createAction
+    methods: [POST]
+
+lecture_delete:
+    path: /lecture/delete/{id}
+    controller: App\Controller\LectureController::deleteAction
+    methods: [DELETE]
+
+lecture_get_id:
+    path: /lecture/id/{id}
+    controller: App\Controller\LectureController::getByIdAction
+    methods: [GET]
+
+lecture_get_name:
+    path: /lecture/name/{name}
+    controller: App\Controller\LectureController::getByNameAction
+    methods: [GET]
+
+review_create:
+    path: /review/create
+    controller: App\Controller\ReviewController::createAction
+    methods: [POST]
+
+review_delete:
+    path: /review/delete/{id}
+    controller: App\Controller\ReviewController::deleteAction
+    methods: [DELETE]
+
+review_get_id:
+    path: /review/id/{id}
+    controller: App\Controller\ReviewController::getByIdAction
+    methods: [GET]
+
+teacher_create:
+    path: /teacher/create
+    controller: App\Controller\TeacherController::createAction
+    methods: [ POST ]
+
+teacher_delete:
+    path: /teacher/delete/{id}
+    controller: App\Controller\TeacherController::deleteAction
+    methods: [ DELETE ]
+
+teacher_get_id:
+    path: /teacher/id/{id}
+    controller: App\Controller\TeacherController::getByIdAction
+    methods: [ GET ]
+
+teacher_get_name:
+    path: /teacher/name/{name}
+    controller: App\Controller\TeacherController::findByUsernameAction
+    methods: [ GET ]
+
+teacher_get_all:
+    path: /teacher
+    controller: App\Controller\TeacherController::findAllAction
+    methods: [ GET ]
+
+teacher_update:
+    path: /teacher/update/{id}
+    controller: App\Controller\TeacherController::updateAction
+    methods: [ PUT ]
+
+user_create:
+    path: /user/create
+    controller: App\Controller\UserController::createAction
+    methods: [ POST ]
+
+user_delete:
+    path: /user/delete/{id}
+    controller: App\Controller\UserController::deleteAction
+    methods: [ DELETE ]
+
+user_get_ocourses:
+    path: /user/{id}/courses
+    controller: App\Controller\UserController::getOwnCoursesAction
+    methods: [ GET ]
+
+user_get_fcourses:
+    path: /user/{id}/favorites
+    controller: App\Controller\UserController::getFavCoursesAction
+    methods: [ GET ]
+
+user_update:
+    path: /user/update/{id}
+    controller: App\Controller\UserController::updateAction
+    methods: [ PUT ]
+
+user_sign_in:
+    path: /user/login
+    controller: App\Controller\AuthController::userLogin
+    methods: [ POST ]
+
+user_sign_up:
+    path: /user/register
+    controller: App\Controller\AuthController::userRegistration
+    methods: [ POST ]
+
+teacher_sign_in:
+    path: /teacher/login
+    controller: App\Controller\AuthController::teacherLogin
+    methods: [ POST ]
+
+teacher_sign_up:
+    path: /teacher/register
+    controller: App\Controller\AuthController::teacherRegistration
+    methods: [ POST ]
